@@ -22,7 +22,7 @@ class MainTest {
                 "2,      Login"
         };
         StringBuilder builder = new StringBuilder();
-        for (String line: lines) {
+        for (String line : lines) {
             builder.append(line + "\n");
         }
         Assertions.assertArrayEquals(expected, lines, builder.toString());

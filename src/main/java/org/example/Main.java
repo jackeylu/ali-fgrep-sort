@@ -1,6 +1,9 @@
 package org.example;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -8,7 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 
 public class Main {
 
@@ -66,7 +68,7 @@ public class Main {
                 File[] files = baseDir.listFiles((dir, name) -> name.endsWith(suffix));
                 ExecutorService executor = Executors.newCachedThreadPool();
                 LinkedBlockingQueue<String[]> linesList = new LinkedBlockingQueue<>();
-                for (File file: files) {
+                for (File file : files) {
                     executor.submit(() -> {
                         String[] lines;
                         try {
@@ -85,7 +87,7 @@ public class Main {
                     String[] lines = null;
                     int totalSize = 0;
                     int j = 0;
-                    while ((lines = linesList.poll()) != null){
+                    while ((lines = linesList.poll()) != null) {
                         totalSize += lines.length;
                         allOfLines[j] = lines;
                         j++;
@@ -110,12 +112,12 @@ public class Main {
         return new String[0];
     }
 
-    protected static String[] extractKeywordLines(File file, String keyword)  {
+    protected static String[] extractKeywordLines(File file, String keyword) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             LinkedList<String> list = new LinkedList<>();
-            while ((line = reader.readLine())!=null){
-                if (line.contains(keyword)){
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(keyword)) {
                     list.add(line);
                 }
             }
