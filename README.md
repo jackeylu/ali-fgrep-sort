@@ -1,12 +1,11 @@
 # Question
+一道阿里的笔试题：
 
 用Java实现以下功能，要求使用多线程，打印语句直接使用
 print(xx)，可以不用写try catch
 
 ```shell script
-cat /home/user/logs/*.log | \
-  grep 'Login' | sort | uniq -c | \
-  sort -nr 
+cat /home/user/logs/*.log | grep 'Login' | sort | uniq -c | sort -nr 
 ```
 
 # 解题
