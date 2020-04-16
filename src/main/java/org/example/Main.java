@@ -23,7 +23,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String[] filteredLines = call(args[1], args[2], args[3]);
+        System.out.printf("base %s, suffix %s, keyword %s. %n", args[0], args[1], args[2]);
+        String[] filteredLines = call(args[0], args[1], args[2]);
         for (String filteredLine : filteredLines) {
             System.out.println(filteredLine);
         }
@@ -66,6 +67,14 @@ public class Main {
             if (baseDir.isDirectory()) {
 //                File[] files = baseDir.listFiles((dir, name) -> Pattern.matches(convertedPattern, name));
                 File[] files = baseDir.listFiles((dir, name) -> name.endsWith(suffix));
+                if (null == files) {
+                    System.err.println("Not matched file.");
+                    return new String[0];
+                }
+                System.out.println("Found matched files:");
+                for (File file: files) {
+                    System.out.println(file.getName());
+                }
                 ExecutorService executor = Executors.newCachedThreadPool();
                 LinkedBlockingQueue<String[]> linesList = new LinkedBlockingQueue<>();
                 for (File file : files) {
@@ -84,7 +93,7 @@ public class Main {
                     executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
 
                     Object[] allOfLines = new Object[files.length];
-                    String[] lines = null;
+                    String[] lines;
                     int totalSize = 0;
                     int j = 0;
                     while ((lines = linesList.poll()) != null) {
@@ -104,9 +113,11 @@ public class Main {
                     e.printStackTrace();
                 }
             } else {
+                System.err.printf("Given path %s is not a directory.%n", baseDir);
                 return new String[0];
             }
         } else {
+            System.err.printf("Base directory %s is not exist.%n", baseDir);
             return new String[0];
         }
         return new String[0];
